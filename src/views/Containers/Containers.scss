@@ -291,9 +291,9 @@
     opacity: 1;
   }
 
-  .repair-filter-button.change-button{
-    background-color: $turkish-green !important;
-    color: $white-bg !important;
+  .container-filter-button.change-button {
+    background-color: $turkish-green;
+    color: $white-bg;
   }
 
   .repair-filter-button.change-button span {
@@ -317,8 +317,6 @@
     color: $turkish-green;
     font-weight: 500;
 }
-
-
 
 .container-box-table {
     margin-top: 20px;
