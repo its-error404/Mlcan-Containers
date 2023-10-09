@@ -10,10 +10,6 @@ input, select {
     
 }
 
-.tick-icon-filled {
-    filter: brightness(0) saturate(100%) invert(47%) sepia(41%) saturate(588%) hue-rotate(119deg) brightness(97%) contrast(89%);
-}
-
 .add-repair-section 
 {
     margin-bottom: 40px !important;
@@ -94,6 +90,7 @@ input, select {
 .repair-details__second-col {
     display: flex;
     gap: 30px;
+    margin-top: 20px;
 }
 
 .select-fields label {
@@ -110,19 +107,6 @@ input, select {
     margin-top: -20px !important;
 }
 
-hr {
-    margin-top: 20px;
-    margin-bottom: 10px !important;
-}
-
-.non-maersk-details-section h4{
-    margin-top: 20px;
-}
-
-h4 {
-    font-size: 16px;
-    font-weight: 600;
-}
 .section-two.disabled > .non-maersk-details-section {
     opacity: 0.4;
     pointer-events: none;
@@ -247,8 +231,7 @@ h4 {
 }
 
 .location-div {
-    margin-top: -2px;
-    margin-left: 30px;
+    margin-top: 0;
 }
 
 .final-buttons:last-child {
@@ -263,6 +246,7 @@ h4 {
 
 .section-title {
     align-items: center;
+    display: flex;
 }
 
 .na1-box {
@@ -275,50 +259,26 @@ h4 {
 }
 
 hr {
-    border-top: 1px solid $lightest-border;
+    border-top: 1px solid $light-gray;
 }
 
-.customer-rel {
+.non-maersk-details-section {
     margin-top: 20px;
 }
 
-.cost-details {
+.non-maersk-details-section h4 {
+    margin-top: 20px;
+}
+
+.merc-plus-form-section {
+    margin-top: 20px;
+}
+
+.mat-cost-div {
     margin-bottom: 30px;
 }
 
-.section-two {
-    margin-right: 30px;
+h4 {
+    margin-top: 30px !important;
 }
 
-.section-buttons {
-    display: flex;
-    gap: 30px;
-    background-color: $row-color-first;
-    padding-top: 15px;
-    padding-left: 50px;
-    padding-bottom: 20px;
-    font-weight: 500;
-    max-width: 1400px;
-    height: 60px;
-    margin-top: 20px;
-    margin-right: -20px;
-    margin-left: -20px;
-}
-
-.form-active {
-    padding-bottom: 45px;
-    border-bottom: 2px solid $turkish-green;
-}
-
-.container-repair-area select {
-    border: 1px solid $lightest-border !important;
-    border-radius: 5px !important;
-    height: 40px;
-    width: 570px;
-    margin-top: 10px;
-    background-color: $white-bg;
-}
-
-.first-column {
-    margin-left: 20px;
-}

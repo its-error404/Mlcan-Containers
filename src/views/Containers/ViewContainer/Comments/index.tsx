@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { fetchCommentsData } from "../../../../services/ContainersService/viewcontainer.service";
+import { addComment, fetchCommentsData } from "../../../../services/ContainersService/viewcontainer.service";
 import "./Comments.scss";
 import { CommentsData } from "../../../../models/comments.model";
-import { Button, Input, Pagination, notification } from "antd";
-import axiosInstance from "../../../../interceptor/axiosInstance";
-import { ApiRoutes } from "../../../../routes/routeConstants/apiRoutes";
+import { Button, Input, Pagination } from "antd";
 const CommentsComponent = () => {
   const [commentsData, setCommentsData] = useState<CommentsData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -49,27 +47,13 @@ const CommentsComponent = () => {
   const handleAddComment = async () => {
     const inputElement = document.querySelector(".comments-input") as HTMLInputElement;
     const commentText = inputElement.value;
-
-    if (commentText) {
       try {
-        
-        const response = await axiosInstance.post(`${ApiRoutes.COMMENTS}`, {
-          comment: commentText,
-        });     
-          const updatedData = await fetchCommentsData();
-          setCommentsData(updatedData as CommentsData | null);
-          notification.success({
-            message: "Comment added Successfully !",
-            className: "custom-notification-placement",
-          });
-          setTimeout(() => {
-            notification.destroy();
-          }, 3000);
-  
+        await addComment(commentText);
+        const updatedData = await fetchCommentsData();
+        setCommentsData(updatedData as CommentsData | null);
       } catch (error) {
         console.error("Error adding comment:", error);
       }
-    }
   };
 
   return (

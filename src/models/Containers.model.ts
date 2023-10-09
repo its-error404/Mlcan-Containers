@@ -24,7 +24,7 @@ export class ContainersData {
     activityId?: string;
 
     @serializable(alias('activity_uid', primitive()))
-    activityUid?: string;
+    activityUid?: string | '';
 
     @serializable(alias('activity_status', primitive()))
     activityStatus?: string;

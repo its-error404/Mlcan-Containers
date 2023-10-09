@@ -4,7 +4,7 @@ import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
 import { ReactComponent as SearchIcon } from "../../assets/single color icons - SVG/search.svg";
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
-import { Button, Table } from "antd";
+import { Button, DatePicker, Table } from "antd";
 import { getContainersData } from "../../services/ContainersService/containers.service";
 import AddContainer from "./AddContainer";
 import { Link } from "react-router-dom";
@@ -39,35 +39,24 @@ const AllContainers = () => {
   const [showActivityUidColumn, setShowActivityUidColumn] = useState(false);
   const [sortedInfo, setSortedInfo] = useState<SorterResult<ContainersData>>({});
 
-  const handleChange: TableProps<ContainersData>["onChange"] = (
-    pagination,
-    filters,
-    sorter
-  ) => {
+  const handleChange: TableProps<ContainersData>['onChange'] = (pagination, filters, sorter) => {
     if (Array.isArray(sorter)) {
-    } else if (sorter?.field) {
+      
+    } else if (sorter && sorter.field) {
       setSortedInfo(sorter as SorterResult<ContainersData>);
+  
       const newFilteredData = [...filteredEntries];
       newFilteredData.sort((a, b) => {
-        const fieldA = a[sorter.field as keyof ContainersData] as string;
-        const fieldB = b[sorter.field as keyof ContainersData] as string;
-        if (sorter.order === "ascend") {
-          return fieldA.localeCompare(fieldB);
+        if (sorter.order === 'ascend') {
+          return a[sorter.field].localeCompare(b[sorter.field]);
         } else {
-          return fieldB.localeCompare(fieldA);
+          return b[sorter.field].localeCompare(a[sorter.field]);
         }
       });
       setFilteredEntries(newFilteredData);
     }
   };
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (selectedKeys: React.Key[], selectedRows: ContainersData[]) => {
-      setSelectedRowKeys(selectedKeys.map((key) => key.toString()));
-    },
-  };
-
+  
   useEffect(() => {
     refreshData();
   }, []);
@@ -117,10 +106,11 @@ const AllContainers = () => {
     setShowActivityUidColumn(section === "Draft");
   };
 
+
   const getRowClassName = (record: ContainersData, index: number) => {
     return index % 2 === 0 ? "even-row" : "odd-row";
   };
-  const startIndex = Math.min(displayedEntries, totalEntries);
+  const startIndex = Math.min(displayedEntries, totalEntries) > 0 ? 1 : 0;
   const endIndex = Math.min(displayedEntries, totalEntries);
 
   const applyFilters = () => {
@@ -155,6 +145,7 @@ const AllContainers = () => {
     setDisplayedEntries(newFilteredData.length);
     setFilterMenu(false);
   };
+
 
   const handleResetFilters = () => {
     setActivityData("");
@@ -261,6 +252,21 @@ const AllContainers = () => {
         sortedInfo.columnKey === "activityType" ? sortedInfo.order : null,
       ellipsis: true,
     },
+    sectionIndex === 1
+    ? {
+        title: (
+          <div className="sort-column">Activity ID</div>
+        ),
+        dataIndex: "activityUid",
+        key: "activityUid",
+        render: (text: string) =>
+          showActivityUidColumn ? text || "N/A" : null,
+        sorter: (a: ContainersData, b: ContainersData) =>
+          a.activityUid.length - b.activityUid.length,
+        sortOrder: sortedInfo.columnKey === "activityUid" ? sortedInfo.order : null,
+        ellipsis: true,
+      }
+    : null,
     {
       title: <div className="sort-column">Activity Date</div>,
       dataIndex: "activityDate",
@@ -289,13 +295,12 @@ const AllContainers = () => {
 
         return (
           <div
-            className={`activity-text ${
-              text === "billing"
-                ? "billing-style"
-                : text === "draft"
+            className={`activity-text ${text === "billing"
+              ? "billing-style"
+              : text === "draft"
                 ? "draft-style"
                 : "default-style"
-            }`}
+              }`}
           >
             {displayedText}
           </div>
@@ -419,13 +424,7 @@ const AllContainers = () => {
               <span className="search-icon">
                 <SearchIcon width={17} />
               </span>
-              <input
-                type="text"
-                className="search-box"
-                placeholder="Search container by number"
-                onChange={SearchChange}
-                value={searchData}
-              ></input>
+              <input type="text" className="search-box" placeholder="Search container by number" onChange={SearchChange} value={searchData}></input>
               {searchData && (
                 <Button className="clear-search" onClick={handleClearSearch}>
                   Clear

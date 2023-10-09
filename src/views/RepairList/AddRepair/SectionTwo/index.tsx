@@ -1,44 +1,42 @@
-import { Button, Checkbox } from 'antd'
-import React, { useEffect, useState } from 'react'
-import { FormikValues } from 'formik'
-import CustomInput from '../../../../shared/components/InputField'
-import CustomSelect from '../../../../shared/components/SelectField'
-import axiosInstance from '../../../../interceptor/axiosInstance'
-import { ApiRoutes } from '../../../../routes/routeConstants/apiRoutes'
+import { Button, Checkbox } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { FormikValues } from 'formik'; 
+import CustomInput from '../../../../shared/components/InputField';
+import CustomSelect from '../../../../shared/components/SelectField';
+import { RepairFormMeta } from '../../../../services/RepairListService/repair.service';
 
 interface SectionTwoProps {
   onclose: () => void
   formik: {
-    values: FormikValues
-    handleChange: (e: React.ChangeEvent) => void
-    handleBlur: (e: React.FocusEvent) => void
-  }
-  sectionCompleted: boolean
+    values: FormikValues;
+    handleChange: (e: React.ChangeEvent<any>) => void;
+    handleBlur: (e: React.FocusEvent<any>) => void;
+  };
+  sectionCompleted?: boolean
 }
 
-const SectionTwo: React.FC<SectionTwoProps> = ({
-  onclose,
-  formik,
-  sectionCompleted
-}) => {
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false)
-  const [modeOptions, setModeOptions] = useState([])
+const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik, sectionCompleted }) => {
+
+const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+const [modeOptions, setModeOptions] = useState([])
 
   const handleCheckboxChange = () => {
     setIsCheckboxChecked(!isCheckboxChecked)
   }
 
   useEffect(() => {
-    axiosInstance
-      .get(`${ApiRoutes.REP_CATEGORIES}`)
-      .then(response => {
-        setModeOptions(response.data.data.values)
-      })
-      .catch(error => {
-        console.error('Error fetching repArea options:', error)
-      })
-  }, [onclose])
-
+    const fetchCont = async () => {
+      try {
+        const repCategoriesOptions = await RepairFormMeta();
+        const modeOptionsData = repCategoriesOptions.repCategoriesOptionsData;
+        setModeOptions(modeOptionsData);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchCont();
+  }, []);
+  
   return (
     <div>
       <div className={`section-two ${isCheckboxChecked ? 'disabled' : ''}`}>
@@ -235,17 +233,17 @@ const SectionTwo: React.FC<SectionTwoProps> = ({
             </div>
           </div>
         </div>
-        <div className='button-container'>
-          <Button type='primary' onClick={onclose}>
-            Discard
-          </Button>
-          <button type='submit' className='final-buttons'>
-            Add Repair
-          </button>
-        </div>
+      <div className="button-container">
+        <Button type="primary" onClick={onclose}>
+          Discard
+        </Button>
+        <button type="submit" className="final-buttons">
+          Add Repair
+        </button>
       </div>
     </div>
-  )
-}
+    </div>
+  );
+};
 
-export default SectionTwo
+export default SectionTwo;

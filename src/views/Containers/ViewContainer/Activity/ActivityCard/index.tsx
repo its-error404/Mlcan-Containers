@@ -10,11 +10,11 @@ import "antd/dist/antd.css";
 import "./ActivityCard.scss";
 import "../../../../RepairList/RepairList.scss";
 import './Dropdown.scss'
-import { Button, Dropdown, Menu, Select, Table, notification } from "antd";
+import { Button, Dropdown, Menu, Select, Table } from "antd";
 import AddItem from "./AddItem";
 import OverlayBox from "../../../../../shared/components/overlayBox";
 import { ContainerData } from "../../../../../models/singlecontainer.model";
-import { fetchActivityStatus, toggleExpandRepairCard, upgradeRepairForm } from "../../../../../services/ContainersService/viewcontainer.service";
+import { fetchActivityStatus, handleConfirm, toggleExpandRepairCard, toggleExpandedQuoteCard } from "../../../../../services/ContainersService/viewcontainer.service";
 
 interface RepairFormData {
   uid: string;
@@ -225,8 +225,11 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
   const toggleExpandCard = () => {
     setIsExpanded(!isExpanded);
     toggleExpandRepairCard(UniqueID)
+    toggleExpandedQuoteCard(UniqueID)
     .then((response)=> {
       setExpandedRepairFormData(response)
+      setExpandedQuoteFormData(response)
+
     })
   };
 
@@ -234,22 +237,18 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
     setAddItem(!addItem);
   };
 
-  const handleConfirm = async (id: string, option:string, uniqueID: string) => {
-    try {
-      upgradeRepairForm(id, option) 
-      setShowConfirmation(false);
-    } catch (error) {
-      setShowConfirmation(false); 
-    }
-  };
-  
+const confirmHandler = async () => {
+  try {
+    await handleConfirm(UniqueID, selectedOption, setShowConfirmation);
+  } catch (error) {
+  }
+};
+
   const handleCancel = () => {
     setShowConfirmation(false);
   };
 
   return (
-
-    
     <div
       className={`activity-card ${formTypeClass} ${
         isExpanded ? "expanded" : ""
@@ -341,7 +340,8 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
                 {expandedRepairFormData.uid &&
                 <p>{formType} - {expandedRepairFormData.uid} will be moved to <span className="update-activity-text">{updateActivityStatus}</span> status</p>}
               </div>
-              <div className="delete-confirmation-buttons update-status-buttons-container">
+              <div className="delete-confirmation-buttons">
+              <button onClick={()=>confirmHandler}>Confirm</button>
               <button onClick={handleCancel}>Cancel</button>
               <button onClick={()=>handleConfirm(expandedRepairFormData.id, updateActivityStatus, expandedRepairFormData.uid)}>Confirm</button>
               </div>

@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import './activity.scss'
 import { ReactComponent as QuoteIcon } from '../../../../assets/single color icons - SVG/quote.svg';
 import { ReactComponent as RepairIcon } from '../../../../assets/single color icons - SVG/repair.svg'
-import { ReactComponent as InspectionIcon } from '../../../../assets/single color icons - SVG/inspection.svg'
-import { fetchActivityData } from "../../../../services/ContainersService/viewcontainer.service";
+import { fetchActivityData, toggleExpandRepairCard, toggleExpandedQuoteCard } from "../../../../services/ContainersService/viewcontainer.service";
 import { Space } from "antd";
 import ActivityCard from "./ActivityCard";
 import 'antd/dist/antd.css';
@@ -36,6 +35,15 @@ const ActivitySection: React.FC = () => {
     }
     fetchData();
   }, []);
+
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
 
   return (
     <div className="activity-section">

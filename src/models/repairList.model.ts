@@ -18,6 +18,9 @@ class Merc {
   @serializable(alias('max_mat_cost', primitive()))
   maxMatCost?: number;
 
+  @serializable(alias('nmaerk_hours', primitive()))
+  nonMaerskHours?: number;
+
   @serializable(alias('unit_mat_cost', primitive()))
   unitMatCost?: number;
 

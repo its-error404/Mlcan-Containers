@@ -15,7 +15,7 @@
 }
 .filter-icon {
   position: absolute;
-  left: 8.5%;
+  left: 21.5%;
   filter: brightness(0) saturate(100%) invert(51%) sepia(10%) saturate(2383%)
   hue-rotate(119deg) brightness(95%) contrast(82%);
 }
@@ -93,7 +93,7 @@ label {
 
 .filter-header__second-part h4:last-child{
   color: $turkish-green;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .filter-header__first-part {
@@ -171,7 +171,8 @@ label {
 .export-button {
   width: 100px;
   height: 40px;
-  background-color: $white-bg;
+  background-color: $bg-white;
+  color: $turkish-green;
   padding-left: 20px;
 }
 
@@ -223,8 +224,7 @@ label {
   position: absolute;
   top: 18%;
   left: 47%;
-  margin-top: 10px;
-  margin-left: 20px;
+  margin-top: 20px;
   background-color: $filter-menu-bg;
   padding: 20px;
   height: 17vh !important;

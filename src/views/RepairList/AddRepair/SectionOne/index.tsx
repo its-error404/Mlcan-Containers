@@ -4,8 +4,7 @@ import { FormikProps, FormikValues } from 'formik'
 import 'antd/dist/antd.css'
 import CustomInput from '../../../../shared/components/InputField'
 import CustomSelect from '../../../../shared/components/SelectField'
-import axiosInstance from '../../../../interceptor/axiosInstance'
-import { ApiRoutes } from '../../../../routes/routeConstants/apiRoutes'
+import { RepairFormMeta } from '../../../../services/RepairListService/repair.service'
 
 interface SectionOneProps {
   onclose: () => void
@@ -28,47 +27,20 @@ const SectionOne: React.FC<SectionOneProps> = ({
   const [eventOptions, setEventOptions] = useState<string[]>([])
 
   useEffect(() => {
-    axiosInstance
-      .get(`${ApiRoutes.COMP_OPTIONS}`)
-      .then(response => {
-        setCompOptions(response.data.data.values)
-      })
-      .catch(error => {
-        console.error('Error fetching repArea options:', error)
-      })
-    axiosInstance
-      .get(`${ApiRoutes.DAM_OPTIONS}`)
-      .then(response => {
-        setDamOptions(response.data.data.values)
-      })
-      .catch(error => {
-        console.error('Error fetching repArea options:', error)
-      })
-    axiosInstance
-      .get(`${ApiRoutes.REP_OPTIONS}`)
-      .then(response => {
-        setRepOptions(response.data.data.values)
-      })
-      .catch(error => {
-        console.error('Error fetching repArea options:', error)
-      })
-    axiosInstance
-      .get(`${ApiRoutes.COMPONENT_OPTIONS}`)
-      .then(response => {
-        setComponentOptions(response.data.data.values)
-      })
-      .catch(error => {
-        console.error('Error fetching repArea options:', error)
-      })
-    axiosInstance
-      .get(`${ApiRoutes.EVENT_OPTIONS}`)
-      .then(response => {
-        setEventOptions(response.data.data.values)
-      })
-      .catch(error => {
-        console.error('Error fetching repArea options:', error)
-      })
-  }, [onclose])
+    const fetchRep = async () => {
+      try {
+        const { compOptionsData, damOptionsData, repOptionsData, componentOptionsData, eventOptionsData } = await RepairFormMeta() 
+        setCompOptions(compOptionsData);
+        setDamOptions(damOptionsData);
+        setRepOptions(repOptionsData);
+        setComponentOptions(componentOptionsData);
+        setEventOptions(eventOptionsData);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchRep()
+  }, []);
 
   const handleCheckboxChange = () => {
     setIsCheckboxChecked(!isCheckboxChecked)

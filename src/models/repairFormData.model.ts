@@ -72,8 +72,8 @@ export class RepairResponseData {
   hasNextPage?: boolean;
 
   @serializable(alias("prev_page"))
-  prevPage?: any;
+  prevPage?: number;
 
   @serializable(alias("next_page"))
-  nextPage?: any;
+  nextPage?: number;
 }

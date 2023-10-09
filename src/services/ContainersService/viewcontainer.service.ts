@@ -84,6 +84,13 @@ export const toggleExpandRepairCard = async (uniqueID: string) => {
   }
 };
 
+export const toggleExpandedQuoteCard = async (uniqueID: string) => {
+  try {
+    const response = await axiosInstance.get(`${ApiRoutes.QUOTE_FORM}/&${uniqueID}`)
+    return response.data.data.form
+  } catch (err) {}
+}
+
 export const containerItemsMeta = async () => {
   try {
     const [ repArea, dmgArea, itemTypes, quantity ] = await Promise.all([axiosInstance.get(ApiRoutes.LENGTH), axiosInstance.get(ApiRoutes.HEIGHT), axiosInstance.get(ApiRoutes.YARDS), axiosInstance.get(ApiRoutes.CON_TYPES), axiosInstance.get(ApiRoutes.CUSTOMERS)])
@@ -104,17 +111,56 @@ export const fetchActivityStatus = async () => {
   } catch (err) {}
 }
 
-export const upgradeRepairForm = async (UniqueID:string, selectedOption:string) => {
+export const addComment = async (commentText: string) => {
   try {
-    await axiosInstance.post(`${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`, {
-      option: selectedOption,
-    });
+    const response = await axiosInstance.post(ApiRoutes.COMMENTS, {comment: commentText});
     notification.success({
-      message: "updated Successfully !",
+      message: "Comment Added Successfully",
+      description: "Comment",
       className: "custom-notification-placement",
-    });  
-  }catch (err) { notification.error({
-    message: "update failed !",
-    className: "custom-notification-placement",
-  });}
-}
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    throw error;
+  }
+};
+
+export const upgradeRepairForm = async (UniqueID, selectedOption) => {
+  try {
+    const response = await axiosInstance.post(
+      `${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`,
+      {
+        option: selectedOption,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const handleConfirm = async (UniqueID, selectedOption, setShowConfirmation) => {
+  try {
+    
+    const response = await upgradeRepairForm(UniqueID, selectedOption);
+
+    notification.success({
+      message: "Updated Successfully!",
+      className: "custom-notification-placement",
+    });
+
+    setShowConfirmation(false);
+
+    return response;
+  } catch (error) {
+    setShowConfirmation(false);
+    notification.error({
+      message: "Update Failed!",
+      className: "custom-notification-placement",
+    });
+    console.error("Error updating status:", error);
+
+    throw error;
+  }
+};

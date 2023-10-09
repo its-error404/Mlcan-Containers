@@ -44,9 +44,6 @@ const ViewContainer: React.FC = () => {
     fetchData();
   }, [id]);
 
-  useEffect(() => {
-  }, [containerData]);
-
   const handleEditClick = (container: Container | null) => {
     if (container) {
       setEditContainer(container);
@@ -91,8 +88,10 @@ const ViewContainer: React.FC = () => {
             <h2>hi</h2>
             {containerData && containerData.container && (
               <>
+               
                 <h1>{containerData.container.uid}</h1>
                 <EditIcon width={15} onClick={() => handleEditClick(containerData.container)} />
+                
               </>
             )}
           </div>
@@ -102,6 +101,7 @@ const ViewContainer: React.FC = () => {
             <NextIcon width={30} />
           </div>
         </div>
+      
         <div className="container-headlines">
           <p>Yard name</p>
           <p>Customer</p>

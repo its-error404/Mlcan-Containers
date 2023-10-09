@@ -1,12 +1,15 @@
 import { alias, list, object, serializable } from "serializr";
 
 
+
+
+
 class ItemsData {
-    @serializable(alias('0'))
+    @serializable(alias('id'))
     id?: string;
 
-    @serializable(alias('1'))
-    id1?: string;
+    @serializable(alias('key'))
+    key?: string;
 }
 
 class StatusDocs {

@@ -4,8 +4,7 @@ import { FormikProps, FormikValues } from 'formik';
 import 'antd/dist/antd.css'
 import CustomInput from '../../../../shared/components/InputField';
 import CustomSelect from '../../../../shared/components/SelectField';
-import axiosInstance from '../../../../interceptor/axiosInstance';
-import { ApiRoutes } from '../../../../routes/routeConstants/apiRoutes';
+import { RepairFormMeta } from '../../../../services/RepairListService/repair.service';
 
 interface SectionZeroProps {
   onclose: () => void;
@@ -19,55 +18,23 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
   const [repAreaOptions, setRepAreaOptions] = useState<string[]>([]);
   const [dmgAreaOptions, setDmgAreaOptions] = useState<string[]>([]);
   const [repairTypeOptions, setRepairTypeOptions] = useState<string[]>([]);
-  const [dataFetched, setDataFetched] = useState({
-    repAreas: false,
-    dmgAreas: false,
-    repairTypes: false,
-  });
-  
+
   useEffect(() => {
-    if (!dataFetched.repAreas) {
-      axiosInstance.get(ApiRoutes.REP_AREAS)
-        .then(response => {
-          setRepAreaOptions(response.data.data.values);
-          setDataFetched(prevState => ({
-            ...prevState,
-            repAreas: true,
-          }));
-        })
-        .catch(error => {
-          console.error('Error fetching repArea options:', error);
-        });
-    }
-  
-    if (!dataFetched.dmgAreas) {
-      axiosInstance.get(ApiRoutes.DMG_AREAS)
-        .then(response => {
-          setDmgAreaOptions(response.data.data.values);
-          setDataFetched(prevState => ({
-            ...prevState,
-            dmgAreas: true,
-          }));
-        })
-        .catch(error => {
-          console.error('Error fetching dmgArea options:', error);
-        });
-    }
-  
-    if (!dataFetched.repairTypes) {
-      axiosInstance.get(ApiRoutes.REP_TYPES)
-        .then(response => {
-          setRepairTypeOptions(response.data.data.values);
-          setDataFetched(prevState => ({
-            ...prevState,
-            repairTypes: true,
-          }));
-        })
-        .catch(error => {
-          console.error('Error fetching repairType options:', error);
-        });
-    }
-  }, [dataFetched]);
+    const fetchCont = async () => {
+      try {
+        const metaData = await RepairFormMeta();
+        const repAreaOptionsData = metaData.repAreaOptionsData
+        const dmgAreaOptionsData = metaData.dmgAreaOptionsData
+        const repairTypeOptionsData = metaData.repairTypeOptionsData
+        setRepAreaOptions(repAreaOptionsData)
+        setDmgAreaOptions(dmgAreaOptionsData)
+        setRepairTypeOptions(repairTypeOptionsData)
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchCont();
+  }, []);
   
   return (
     <div>
