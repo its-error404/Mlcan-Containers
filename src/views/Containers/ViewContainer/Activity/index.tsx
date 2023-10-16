@@ -45,7 +45,7 @@ const Activity: React.FC = () => {
         </div>
       ) : (
         <Space direction="vertical" size={1}>
-          {combinedData.map((data, index: number) => (
+          {combinedData.map((data:any, index: number) => (
             <ActivityCard
               key={data.id}
               formType={index % 2 === 0 ? "Repair Form" : "Quote Form"}

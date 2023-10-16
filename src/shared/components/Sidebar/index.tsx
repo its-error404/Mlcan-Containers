@@ -109,13 +109,13 @@ const Sidebar = () => {
                     <p>{data.is_admin}</p>
                 </div>
 
-                <div className={`user-arrow ${dropDown ? "drop-active" : ""}`}
+                <div className={`user-arrow ${dropDown ? "drop-active" : "drop-inactive"}`}
                     onClick={toggleDropdown}>
                     <AccordingOpenIcon width={10} />
                 </div>
 
-                {dropDown && (
-                    <div className="user-dropdown">
+                { (
+                    <div className={`${dropDown ?"user-dropdown": 'user-dropdown-inactive'}`}>
                         <div className="user-dropdown-info">
                         <p className="initial">{data.uid && data.uid.substring(0, 2)}</p>
                             <div className="user-information-dropdown">

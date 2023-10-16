@@ -99,9 +99,6 @@
         font-weight: 600;
     }
 }
-.side-bar__options-text a > :not(span){
-    display: none !important;
-}
 
 .side-bar__options-text span{
     margin-right: 24px;
@@ -130,7 +127,7 @@
     padding-top: 20px;
     margin-left: 10px;
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 .user-dropdown {
@@ -139,6 +136,7 @@
     border-radius: 8px;
     left: 0;
     bottom: 90px;
+    opacity: 1;
     width: 270px;
     overflow: hidden;
     transition: max-height 0.5s ease-in-out, transform 0.5s ease-in-out, margin-left 0.5s ease-in-out;
@@ -160,17 +158,27 @@
     max-height: 245px;
     transform: rotate(180deg);
     margin-left: 20px;
+}
 
-    &.user-dropdown{
-        min-height: 245px;
-        transition: min-height 0.5s ease-in-out, transform 0.5s;
-    }
+.user-dropdown-inactive {
+    position: absolute;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    left: 0;
+    bottom: 90px;
+    width: 270px;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: 0.3s ease-in-out;
+    overflow: hidden;
+    background-color: $user-dropdown-bg;
+    z-index: -1;
 }
 
 .designation-flex {
     display: flex;
     gap: 10px;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 .designation-flex p {
@@ -196,10 +204,8 @@
 
 .mail-container, .number-container {
     display: flex;
-    margin-top: 10px;
     align-items: center;
     gap: 13px;
-    margin-bottom: 20px;
 }
 
 .user-contact {
